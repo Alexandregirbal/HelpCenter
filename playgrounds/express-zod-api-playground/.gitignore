@@ -1,0 +1,5 @@
+/node_modules
+/dist
+
+# Ignore lock for minimum storage as this is a playground
+/package-lock.json
