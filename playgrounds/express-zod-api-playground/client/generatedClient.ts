@@ -2,7 +2,20 @@ type SomeOf<T> = T[keyof T];
 
 /** get /v1/hello */
 type GetV1HelloInput = {
-    name?: string | undefined;
+    simpleString: string;
+    simpleLiteral: "hello";
+    simpleNumber: number;
+    simpleBoolean: boolean;
+    arrayOfStrings: string[];
+    simpleObject: {
+        objectString: string;
+        objectNumber: number;
+    };
+    arrayOfEnums: ("hello" | "world")[];
+    arrayOfObjects: {
+        objectString: string;
+        objectNumber: number;
+    }[];
 };
 
 /** get /v1/hello */
@@ -31,33 +44,82 @@ interface GetV1HelloNegativeResponseVariants {
     400: GetV1HelloNegativeVariant1;
 }
 
+/** post /v1/hello */
+type PostV1HelloInput = {
+    simpleString: string;
+    simpleLiteral: "hello";
+    simpleNumber: number;
+    simpleBoolean: boolean;
+    arrayOfStrings: string[];
+    simpleObject: {
+        objectString: string;
+        objectNumber: number;
+    };
+    arrayOfEnums: ("hello" | "world")[];
+    arrayOfObjects: {
+        objectString: string;
+        objectNumber: number;
+    }[];
+};
+
+/** post /v1/hello */
+type PostV1HelloPositiveVariant1 = {
+    status: "success";
+    data: {
+        greetings: string;
+    };
+};
+
+/** post /v1/hello */
+interface PostV1HelloPositiveResponseVariants {
+    200: PostV1HelloPositiveVariant1;
+}
+
+/** post /v1/hello */
+type PostV1HelloNegativeVariant1 = {
+    status: "error";
+    error: {
+        message: string;
+    };
+};
+
+/** post /v1/hello */
+interface PostV1HelloNegativeResponseVariants {
+    400: PostV1HelloNegativeVariant1;
+}
+
 export type Path = "/v1/hello";
 
 export type Method = "get" | "post" | "put" | "delete" | "patch";
 
 export interface Input {
     "get /v1/hello": GetV1HelloInput;
+    "post /v1/hello": PostV1HelloInput;
 }
 
 export interface PositiveResponse {
     "get /v1/hello": SomeOf<GetV1HelloPositiveResponseVariants>;
+    "post /v1/hello": SomeOf<PostV1HelloPositiveResponseVariants>;
 }
 
 export interface NegativeResponse {
     "get /v1/hello": SomeOf<GetV1HelloNegativeResponseVariants>;
+    "post /v1/hello": SomeOf<PostV1HelloNegativeResponseVariants>;
 }
 
 export interface EncodedResponse {
     "get /v1/hello": GetV1HelloPositiveResponseVariants & GetV1HelloNegativeResponseVariants;
+    "post /v1/hello": PostV1HelloPositiveResponseVariants & PostV1HelloNegativeResponseVariants;
 }
 
 export interface Response {
     "get /v1/hello": PositiveResponse["get /v1/hello"] | NegativeResponse["get /v1/hello"];
+    "post /v1/hello": PositiveResponse["post /v1/hello"] | NegativeResponse["post /v1/hello"];
 }
 
 export type Request = keyof Input;
 
-export const endpointTags = { "get /v1/hello": [] };
+export const endpointTags = { "get /v1/hello": [], "post /v1/hello": [] };
 
 const parseRequest = (request: string) => request.split(/ (.+)/, 2) as [
     Method,

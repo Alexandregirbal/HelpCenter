@@ -8,13 +8,13 @@ const generateClient = () => {
   console.log("Generating client...");
   const clientPath = path.join(__dirname, "../../client/generatedClient.ts");
 
-  const client = new Integration({
+  const clientIntegration = new Integration({
     routing,
     variant: "client",
     serverUrl: "http://playground.alexandre-girbal.dev",
   });
 
-  fs.writeFileSync(clientPath, client.print());
+  fs.writeFileSync(clientPath, clientIntegration.print());
 
   console.log(`Client generated successfully at ${clientPath}`);
 };
