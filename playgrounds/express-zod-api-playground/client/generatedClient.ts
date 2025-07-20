@@ -70,7 +70,7 @@ const substitute = (path: string, params: Record<string, any>) => { const rest =
 
 export type Implementation<T = unknown> = (method: Method, path: string, params: Record<string, any>, ctx?: T) => Promise<any>;
 
-const defaultImplementation: Implementation = async (method, path, params) => { const hasBody = !["get", "delete"].includes(method); const searchParams = hasBody ? "" : `?${new URLSearchParams(params)}`; const response = await fetch(new URL(`${path}${searchParams}`, "https://example.com"), { method: method.toUpperCase(), headers: hasBody ? { "Content-Type": "application/json" } : undefined, body: hasBody ? JSON.stringify(params) : undefined }); const contentType = response.headers.get("content-type"); if (!contentType)
+const defaultImplementation: Implementation = async (method, path, params) => { const hasBody = !["get", "delete"].includes(method); const searchParams = hasBody ? "" : `?${new URLSearchParams(params)}`; const response = await fetch(new URL(`${path}${searchParams}`, "http://playground.alexandre-girbal.dev"), { method: method.toUpperCase(), headers: hasBody ? { "Content-Type": "application/json" } : undefined, body: hasBody ? JSON.stringify(params) : undefined }); const contentType = response.headers.get("content-type"); if (!contentType)
     return; const isJSON = contentType.startsWith("application/json"); return response[isJSON ? "json" : "text"](); };
 
 export class Client<T> {
@@ -80,7 +80,7 @@ export class Client<T> {
 
 export class Subscription<K extends Extract<Request, `get ${string}`>, R extends Extract<PositiveResponse[K], { event: string; }>> {
     public source: EventSource;
-    public constructor(request: K, params: Input[K]) { const [path, rest] = substitute(parseRequest(request)[1], params); const searchParams = `?${new URLSearchParams(rest)}`; this.source = new EventSource(new URL(`${path}${searchParams}`, "https://example.com")); }
+    public constructor(request: K, params: Input[K]) { const [path, rest] = substitute(parseRequest(request)[1], params); const searchParams = `?${new URLSearchParams(rest)}`; this.source = new EventSource(new URL(`${path}${searchParams}`, "http://playground.alexandre-girbal.dev")); }
     public on<E extends R["event"]>(event: E, handler: (data: Extract<R, { event: E; }>["data"]) => void | Promise<void>) { this.source.addEventListener(event, msg => handler(JSON.parse((msg as MessageEvent).data))); return this; }
 }
 
