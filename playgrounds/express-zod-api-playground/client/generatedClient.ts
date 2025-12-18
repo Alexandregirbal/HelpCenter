@@ -6,12 +6,10 @@ type GetV1HelloInput = {
     simpleLiteral: "hello";
     simpleNumber: number;
     simpleBoolean: boolean;
-    arrayOfStrings: string[];
-    simpleObject: {
-        objectString: string;
-        objectNumber: number;
-    };
-    arrayOfEnums: ("hello" | "world")[];
+    arrayOfStrings: undefined;
+    arrayOfStringsTransformed: string;
+    simpleObject: any;
+    arrayOfEnums: undefined;
     arrayOfObjects: {
         objectString: string;
         objectNumber: number;
